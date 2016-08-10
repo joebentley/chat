@@ -23,7 +23,15 @@ net.createServer((socket) => {
         return
       }
 
-      socket.write(`Welcome ${userConn.name}`)
+      socket.write(`Welcome ${userConn.name}\n`)
+    }
+
+    lib.processCommand(data)
+  })
+
+  socket.on('close', () => {
+    if (userConn) {
+      connections.removeUser(userConn)
     }
   })
 

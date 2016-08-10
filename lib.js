@@ -53,7 +53,11 @@ class UserConnections {
   }
 }
 
+function processCommand (userConnection, commandString) {
+}
+
 module.exports = {
   UserConnection,
-  UserConnections
+  UserConnections,
+  processCommand
 }
