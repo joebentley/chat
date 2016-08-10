@@ -54,5 +54,14 @@ describe('UserConnections', function () {
       calledJoe.should.be.false
       calledMarie.should.be.true
     })
+
+    it('should broadcast to self if third argument is truthy', function () {
+      let calledJoe = false
+
+      connections.addUser('joe', {write: function () { calledJoe = true }})
+      connections.broadcast('joe', 'hello', true)
+
+      calledJoe.should.be.true
+    })
   })
 })

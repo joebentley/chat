@@ -44,15 +44,12 @@ class UserConnections {
     return this.users[name]
   }
 
-  broadcast (senderName, message) {
+  broadcast (senderName, message, broadcastSelf) {
     _
     .chain(this.users)
-    .filter((user, prop) => {
-      return user.name !== senderName
-    })
-    .map((user, prop) => {
-      user.socket.write(message)
-    })
+    .filter((user, prop) => broadcastSelf || user.name !== senderName)
+    .map((user, prop) => user.socket.write(message))
+    .value()
   }
 }
 
