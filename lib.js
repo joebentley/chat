@@ -53,7 +53,10 @@ class UserConnections {
   }
 }
 
-function processCommand (userConnection, commandString) {
+function processCommand (userConnection, connections, commandString) {
+  if (!commandString.startsWith('/')) {
+    connections.broadcast(userConnection.name, commandString)
+  }
 }
 
 module.exports = {
