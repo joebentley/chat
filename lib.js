@@ -45,8 +45,7 @@ class UserConnections {
   }
 
   broadcast (senderName, message, broadcastSelf) {
-    _
-    .chain(this.users)
+    _(this.users)
     .filter((user, prop) => broadcastSelf || user.name !== senderName)
     .map((user, prop) => user.socket.write(message))
     .value()
