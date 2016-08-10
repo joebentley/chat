@@ -8,11 +8,14 @@ chai.should()
 describe('#processCommand', function () {
   let connections
   let userConnection
+  let processCommand
 
   beforeEach(function () {
     connections = new lib.UserConnections()
     userConnection = new lib.UserConnection('joe', { write: function () {} })
     connections.addUser(userConnection)
+
+    processCommand = lib.createCommandProcessor(userConnection, connections)
   })
 
   it('should broadcast if input does not start with slash', function () {
@@ -24,7 +27,7 @@ describe('#processCommand', function () {
       calledBroadcast = true
     }
 
-    lib.createCommandProcessor(userConnection, connections)('hello')
+    processCommand('hello')
 
     calledBroadcast.should.be.true
   })
@@ -36,7 +39,7 @@ describe('#processCommand', function () {
       calledBroadcast = true
     }
 
-    lib.createCommandProcessor(userConnection, connections)('/hello')
+    processCommand('/hello')
 
     calledBroadcast.should.be.false
   })
