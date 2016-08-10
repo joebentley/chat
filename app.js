@@ -25,7 +25,7 @@ net.createServer((socket) => {
 
       socket.write(`Welcome ${userConn.name}\n`)
     } else {
-      lib.processCommand(userConn, connections, data)
+      lib.createCommandProcessor(userConn, connections)(data)
     }
   })
 

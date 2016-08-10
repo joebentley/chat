@@ -24,7 +24,7 @@ describe('#processCommand', function () {
       calledBroadcast = true
     }
 
-    lib.processCommand(userConnection, connections, 'hello')
+    lib.createCommandProcessor(userConnection, connections)('hello')
 
     calledBroadcast.should.be.true
   })
@@ -36,7 +36,7 @@ describe('#processCommand', function () {
       calledBroadcast = true
     }
 
-    lib.processCommand(userConnection, connections, '/hello')
+    lib.createCommandProcessor(userConnection, connections)('/hello')
 
     calledBroadcast.should.be.false
   })

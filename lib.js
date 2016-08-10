@@ -52,14 +52,16 @@ class UserConnections {
   }
 }
 
-function processCommand (userConnection, connections, commandString) {
-  if (!commandString.startsWith('/')) {
-    connections.broadcast(userConnection.name, commandString)
+function createCommandProcessor (userConnection, connections) {
+  return function (commandString) {
+    if (!commandString.startsWith('/')) {
+      connections.broadcast(userConnection.name, commandString)
+    }
   }
 }
 
 module.exports = {
   UserConnection,
   UserConnections,
-  processCommand
+  createCommandProcessor
 }
