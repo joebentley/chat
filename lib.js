@@ -12,12 +12,24 @@ class UserConnections {
     this.users = {}
   }
 
-  addSocket (name, socket) {
-    this.users[name] = new UserConnection(name, socket)
-  }
+  addUser (userConnection, socket) {
+    if (userConnection.name !== undefined) {
+      if (this.exists(userConnection.name)) {
+        return false
+      }
 
-  addUser (userConnection) {
-    this.users[userConnection.name] = userConnection
+      this.users[userConnection.name] = userConnection
+      return true
+    } else if (socket !== undefined && _.isString(userConnection)) {
+      if (this.exists(userConnection)) {
+        return false
+      }
+
+      this.users[userConnection] = new UserConnection(userConnection, socket)
+      return true
+    } else {
+      throw new Error('Expected UserConnection or string then Socket')
+    }
   }
 
   removeUser (userConnection) {
@@ -28,7 +40,10 @@ class UserConnections {
     return name in this.users
   }
 
-  // TODO: WRITE TEST FOR THIS
+  getUser (name) {
+    return this.users[name]
+  }
+
   broadcast (senderName, message) {
     _
     .chain(this.users)

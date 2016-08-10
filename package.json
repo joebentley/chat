@@ -26,6 +26,7 @@
   },
   "homepage": "https://github.com/joebentley/chat#readme",
   "dependencies": {
+    "chai": "^3.5.0",
     "lodash": "^4.14.2"
   }
 }
