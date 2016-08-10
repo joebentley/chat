@@ -14,8 +14,6 @@ Written as a hobby project with :coffee: by Joe Bentley
 
 * Create simple chat with users & usernames and broadcast messages
 
-* Handle username conflicts
-
 * Add [timestamps](http://momentjs.com/)
 
 * Add [emoji](https://www.npmjs.com/package/node-emoji) support
