@@ -2,7 +2,7 @@
   "name": "chat",
   "version": "0.0.1",
   "description": "Simple TCP chat written in Node.JS :tada:",
-  "main": "app.js",
+  "main": "lib.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon ./app.js"
