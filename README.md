@@ -2,6 +2,12 @@
 
 Simple TCP chat written in Node.JS :tada:
 
+To run tests:
+
+```bash
+$ npm install && npm test
+```
+
 Written as a hobby project with :coffee: by Joe Bentley
 
 ### TODO
