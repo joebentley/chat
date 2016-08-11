@@ -9,12 +9,12 @@ describe('UserConnections', function () {
   let connections
 
   beforeEach(function () {
-    connections = new lib.UserConnections()
+    connections = lib.UserConnections()
   })
 
   describe('#addUser', function () {
     it('should add user if UserConnection given', function () {
-      connections.addUser(new lib.UserConnection('joe', {}))
+      connections.addUser(lib.UserConnection('joe', {}))
       connections.getUser('joe').should.have.property('name').equal('joe')
       connections.getUser('joe').should.have.property('socket')
     })
@@ -35,6 +35,18 @@ describe('UserConnections', function () {
     it('should error otherwise', function () {
       connections.addUser.bind(1).should.throw(Error)
       connections.addUser.bind('joe').should.throw(Error)
+    })
+  })
+
+  describe('#getUsernames', function () {
+    it('should return a list of user names', function () {
+      connections.addUser('joe', {})
+      connections.addUser('marie', {})
+
+      let userList = connections.getUsernames()
+      userList.should.have.length(2)
+      userList[0].should.equal('joe')
+      userList[1].should.equal('marie')
     })
   })
 

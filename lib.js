@@ -43,6 +43,14 @@ const UserConnections = function () {
       return users[name]
     },
 
+    getUsers: function () {
+      return users
+    },
+
+    getUsernames: function () {
+      return _(users).map((user) => user.name).value()
+    },
+
     broadcast: function (senderName, message, broadcastSelf) {
       _(users)
     .filter((user, prop) => broadcastSelf || user.name !== senderName)
@@ -58,6 +66,9 @@ function createCommandProcessor (userConnection, connections) {
   return function (commandString) {
     if (!commandString.startsWith('/')) {
       connections.broadcast(userConnection.name, commandString)
+    } else if (commandString.startsWith('/users')) {
+      var userList = connections.getUsernames().join('\n') + '\n'
+      userConnection.socket.write(userList)
     }
   }
 }

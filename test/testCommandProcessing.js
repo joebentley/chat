@@ -9,10 +9,11 @@ describe('#processCommand', function () {
   let connections
   let userConnection
   let processCommand
+  let lastWrittenData
 
   beforeEach(function () {
-    connections = new lib.UserConnections()
-    userConnection = new lib.UserConnection('joe', { write: function () {} })
+    connections = lib.UserConnections()
+    userConnection = lib.UserConnection('joe', { write: (data) => { lastWrittenData = data } })
     connections.addUser(userConnection)
 
     processCommand = lib.createCommandProcessor(userConnection, connections)
@@ -42,5 +43,24 @@ describe('#processCommand', function () {
     processCommand('/hello')
 
     calledBroadcast.should.be.false
+  })
+
+  it('should write username list to just self if user types /users', function () {
+    let calledUsernames = false
+    let wroteToMarie = false
+
+    let originalFunction = connections.getUsernames
+    connections.getUsernames = function () {
+      calledUsernames = true
+      return originalFunction()
+    }
+
+    connections.addUser('marie', { write: function () { wroteToMarie = true } })
+
+    processCommand('/users')
+
+    lastWrittenData.should.equal('joe\nmarie\n')
+    calledUsernames.should.be.true
+    wroteToMarie.should.be.false
   })
 })
