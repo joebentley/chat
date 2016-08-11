@@ -1,55 +1,57 @@
 const _ = require('lodash')
 
-class UserConnection {
-  constructor (name, socket) {
-    this.name = name
-    this.socket = socket
+const UserConnection = function (name, socket) {
+  return {
+    name,
+    socket
   }
 }
 
-class UserConnections {
-  constructor () {
-    this.users = {}
-  }
+const UserConnections = function () {
+  let users = {}
 
-  addUser (userConnection, socket) {
-    if (userConnection.name !== undefined) {
-      if (this.exists(userConnection.name)) {
-        return false
+  let self = {
+    addUser: function (userConnection, socket) {
+      if (userConnection.name !== undefined) {
+        if (self.exists(userConnection.name)) {
+          return false
+        }
+
+        users[userConnection.name] = userConnection
+        return true
+      } else if (socket !== undefined && _.isString(userConnection)) {
+        if (self.exists(userConnection)) {
+          return false
+        }
+
+        users[userConnection] = UserConnection(userConnection, socket)
+        return true
+      } else {
+        throw new Error('Expected UserConnection or string then Socket')
       }
+    },
 
-      this.users[userConnection.name] = userConnection
-      return true
-    } else if (socket !== undefined && _.isString(userConnection)) {
-      if (this.exists(userConnection)) {
-        return false
-      }
+    removeUser: function (userConnection) {
+      delete users[userConnection.name]
+    },
 
-      this.users[userConnection] = new UserConnection(userConnection, socket)
-      return true
-    } else {
-      throw new Error('Expected UserConnection or string then Socket')
-    }
-  }
+    exists: function (name) {
+      return name in users
+    },
 
-  removeUser (userConnection) {
-    delete this.users[userConnection.name]
-  }
+    getUser: function (name) {
+      return users[name]
+    },
 
-  exists (name) {
-    return name in this.users
-  }
-
-  getUser (name) {
-    return this.users[name]
-  }
-
-  broadcast (senderName, message, broadcastSelf) {
-    _(this.users)
+    broadcast: function (senderName, message, broadcastSelf) {
+      _(users)
     .filter((user, prop) => broadcastSelf || user.name !== senderName)
     .map((user, prop) => user.socket.write(message))
     .value()
+    }
   }
+
+  return self
 }
 
 function createCommandProcessor (userConnection, connections) {
