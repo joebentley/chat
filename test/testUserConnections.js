@@ -2,6 +2,7 @@
 
 const lib = require('../lib.js')
 const chai = require('chai')
+const moment = require('momentjs')
 
 chai.should()
 
@@ -74,6 +75,15 @@ describe('UserConnections', function () {
       }})
 
       connections.broadcast('joe', 'hello world')
+    })
+
+    it('should broadcast the current time in the format HH:mm', function () {
+      connections.addUser('joe', {})
+      connections.addUser('marie', {write: function (message) {
+        message.should.contain(moment().format('HH:mm')).and.contain('hello marie').and.contain('joe')
+      }})
+
+      connections.broadcast('joe', 'hello marie')
     })
 
     it('should broadcast to self if third argument is truthy', function () {

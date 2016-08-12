@@ -14,6 +14,6 @@ Written as a hobby project by Joe Bentley :coffee:
 
 * ~~Create simple chat with users & usernames and broadcast messages~~
 
-* Add [timestamps](http://momentjs.com/)
+* ~~Add [timestamps](http://momentjs.com/)~~
 
 * Add [emoji](https://www.npmjs.com/package/node-emoji) support

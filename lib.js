@@ -1,4 +1,5 @@
 const _ = require('lodash')
+const moment = require('momentjs')
 
 const UserConnection = function (name, socket) {
   return {
@@ -52,9 +53,11 @@ const UserConnections = function () {
     },
 
     broadcast: function (senderName, message, broadcastSelf) {
+      let timeString = moment().format('HH:mm')
+
       _(users)
       .filter((user, prop) => broadcastSelf || user.name !== senderName)
-      .map((user, prop) => user.socket.write(`${senderName}: ${message}`))
+      .map((user, prop) => user.socket.write(`[${timeString}] ${senderName}: ${message}`))
       .value()
     }
   }
