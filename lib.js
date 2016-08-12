@@ -1,10 +1,20 @@
 const _ = require('lodash')
 const moment = require('momentjs')
+const emoji = require('node-emoji')
 
 const UserConnection = function (name, socket) {
   return {
     name,
-    socket
+    socket,
+
+    sendMessage: function (message) {
+      let replacedEmojiMessage = message.replace(/:(\w+):/g, (match) => {
+        // Pad with space to prevent overlapping with next character
+        return emoji.get(match) + ' '
+      })
+
+      socket.write(replacedEmojiMessage)
+    }
   }
 }
 
@@ -57,7 +67,7 @@ const UserConnections = function () {
 
       _(users)
       .filter((user, prop) => broadcastSelf || user.name !== senderName)
-      .map((user, prop) => user.socket.write(`[${timeString}] ${senderName}: ${message}`))
+      .map((user, prop) => user.sendMessage(`[${timeString}] ${senderName}: ${message}`))
       .value()
     }
   }
@@ -79,7 +89,7 @@ function createCommandProcessor (userConnection, connections) {
       }
     }).join('\n') + '\n'
 
-    userConnection.socket.write(userList)
+    userConnection.sendMessage(userList)
   }
 
   function endSocket () {
@@ -88,7 +98,7 @@ function createCommandProcessor (userConnection, connections) {
 
   function showHelp () {
     const helpString = '\nTo chat, just type your message!\nTo list users type /users\nTo quit type /quit\n\n'
-    userConnection.socket.write(helpString)
+    userConnection.sendMessage(helpString)
   }
 
   return function (commandString) {

@@ -16,4 +16,4 @@ Written as a hobby project by Joe Bentley :coffee:
 
 * ~~Add [timestamps](http://momentjs.com/)~~
 
-* Add [emoji](https://www.npmjs.com/package/node-emoji) support
+* ~~Add [emoji](https://www.npmjs.com/package/node-emoji) support~~

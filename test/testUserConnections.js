@@ -6,6 +6,18 @@ const moment = require('momentjs')
 
 chai.should()
 
+describe('UserConnection', function () {
+  describe('#sendMessage', function () {
+    it('should convert emoji to unicode', function () {
+      let userConnection = lib.UserConnection('joe', {write: function (message) {
+        message.should.contain('☕').and.contain('🎉')
+      }})
+
+      userConnection.sendMessage('hello, :coffee: :tada:')
+    })
+  })
+})
+
 describe('UserConnections', function () {
   let connections
 
@@ -93,6 +105,15 @@ describe('UserConnections', function () {
       connections.broadcast('joe', 'hello', true)
 
       calledJoe.should.be.true
+    })
+
+    it('should convert emoji strings to unicode', function () {
+      connections.addUser('joe', {})
+      connections.addUser('marie', {write: function (message) {
+        message.should.contain('☕').and.contain('🎉')
+      }})
+
+      connections.broadcast('joe', 'hello, :coffee: :tada:')
     })
   })
 })
