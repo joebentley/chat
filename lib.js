@@ -63,21 +63,40 @@ const UserConnections = function () {
 }
 
 function createCommandProcessor (userConnection, connections) {
+  function chat (message) {
+    connections.broadcast(userConnection.name, message)
+  }
+
+  function listUsers () {
+    var userList = _(connections.getUsernames()).map((username) => {
+      if (username === userConnection.name) {
+        return username + ' (you)'
+      } else {
+        return username
+      }
+    }).join('\n') + '\n'
+
+    userConnection.socket.write(userList)
+  }
+
+  function endSocket () {
+    userConnection.socket.end()
+  }
+
+  function showHelp () {
+    const helpString = '\nTo chat, just type your message!\nTo list users type /users\nTo quit type /quit\n\n'
+    userConnection.socket.write(helpString)
+  }
+
   return function (commandString) {
     if (!commandString.startsWith('/')) {
-      connections.broadcast(userConnection.name, commandString)
+      chat(commandString)
     } else if (commandString.startsWith('/users')) {
-      var userList = _(connections.getUsernames()).map((username) => {
-        if (username === userConnection.name) {
-          return username + ' (you)'
-        } else {
-          return username
-        }
-      }).join('\n') + '\n'
-
-      userConnection.socket.write(userList)
+      listUsers()
     } else if (commandString.startsWith('/quit')) {
-      userConnection.socket.end()
+      endSocket()
+    } else if (commandString.startsWith('/help')) {
+      showHelp()
     }
   }
 }
