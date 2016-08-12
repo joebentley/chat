@@ -53,9 +53,9 @@ const UserConnections = function () {
 
     broadcast: function (senderName, message, broadcastSelf) {
       _(users)
-    .filter((user, prop) => broadcastSelf || user.name !== senderName)
-    .map((user, prop) => user.socket.write(message))
-    .value()
+      .filter((user, prop) => broadcastSelf || user.name !== senderName)
+      .map((user, prop) => user.socket.write(`${senderName}: ${message}`))
+      .value()
     }
   }
 

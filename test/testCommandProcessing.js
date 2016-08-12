@@ -24,7 +24,7 @@ describe('#processCommand', function () {
 
     connections.broadcast = function (senderName, message) {
       senderName.should.equal(userConnection.name)
-      message.should.equal('hello')
+      message.should.contain('hello')
       calledBroadcast = true
     }
 

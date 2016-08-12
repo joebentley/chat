@@ -58,13 +58,22 @@ describe('UserConnections', function () {
       connections.addUser('joe', {write: function () { calledJoe = true }})
       connections.addUser('marie', {write: function (message) {
         calledMarie = true
-        message.should.equal('hello')
+        message.should.contain('hello')
       }})
 
       connections.broadcast('joe', 'hello')
 
       calledJoe.should.be.false
       calledMarie.should.be.true
+    })
+
+    it('should broadcast senders username in the message', function () {
+      connections.addUser('joe', {})
+      connections.addUser('marie', {write: function (message) {
+        message.should.contain('hello world').and.contain('joe')
+      }})
+
+      connections.broadcast('joe', 'hello world')
     })
 
     it('should broadcast to self if third argument is truthy', function () {
