@@ -27,7 +27,7 @@ const UserConnections = function () {
         users[userConnection] = UserConnection(userConnection, socket)
         return true
       } else {
-        throw new Error('Expected UserConnection or string then Socket')
+        throw new Error('Expected UserConnection, or a string followed by a Socket')
       }
     },
 
