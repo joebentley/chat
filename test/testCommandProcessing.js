@@ -64,4 +64,15 @@ describe('#processCommand', function () {
     calledUsernames.should.be.true
     wroteToMarie.should.be.false
   })
+
+  it('should end socket when user types /quit', function () {
+    let calledEnd = false
+    userConnection.socket.end = function () {
+      calledEnd = true
+    }
+
+    processCommand('/quit')
+
+    calledEnd.should.be.true
+  })
 })

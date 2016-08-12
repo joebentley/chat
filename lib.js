@@ -76,6 +76,8 @@ function createCommandProcessor (userConnection, connections) {
       }).join('\n') + '\n'
 
       userConnection.socket.write(userList)
+    } else if (commandString.startsWith('/quit')) {
+      userConnection.socket.end()
     }
   }
 }
