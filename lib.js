@@ -67,7 +67,14 @@ function createCommandProcessor (userConnection, connections) {
     if (!commandString.startsWith('/')) {
       connections.broadcast(userConnection.name, commandString)
     } else if (commandString.startsWith('/users')) {
-      var userList = connections.getUsernames().join('\n') + '\n'
+      var userList = _(connections.getUsernames()).map((username) => {
+        if (username === userConnection.name) {
+          return username + ' (you)'
+        } else {
+          return username
+        }
+      }).join('\n') + '\n'
+
       userConnection.socket.write(userList)
     }
   }

@@ -59,7 +59,8 @@ describe('#processCommand', function () {
 
     processCommand('/users')
 
-    lastWrittenData.should.equal('joe\nmarie\n')
+    // Should put "(you)" next to the current users name
+    lastWrittenData.should.equal('joe (you)\nmarie\n')
     calledUsernames.should.be.true
     wroteToMarie.should.be.false
   })
