@@ -8,11 +8,11 @@ To run tests:
 $ npm install && npm test
 ```
 
-Written as a hobby project with :coffee: by Joe Bentley
+Written as a hobby project by Joe Bentley :coffee:
 
 ### TODO
 
-* Create simple chat with users & usernames and broadcast messages
+* ~~Create simple chat with users & usernames and broadcast messages~~
 
 * Add [timestamps](http://momentjs.com/)
 
